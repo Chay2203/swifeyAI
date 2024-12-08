@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; 
 import 'package:swifey/screens/name.dart';
 import 'package:swifey/models/user.dart';
-
+import 'dart:math';
+import 'package:swifey/services/mongo.dart';
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
@@ -14,9 +15,11 @@ class _AuthScreenState extends State<AuthScreen> {
   bool isLogin = true;
   final TextEditingController emailController = TextEditingController();
 
-void handleNext() {
+void handleNext() async {
+  int userId = Random().nextInt(1000000000);
   if (emailController.text.isNotEmpty) {
-    final user = UserModel(email: emailController.text);
+    final user = UserModel(email: emailController.text, userId: userId.toString());
+    await MongoDBService.insertUser(user);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => Name(user: user)),

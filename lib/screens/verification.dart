@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swifey/models/user.dart';
 import 'package:swifey/services/mongo.dart';
-import 'stake.dart';
+import 'swipe.dart';
 
 class ProfileVerificationPage extends StatefulWidget {
   final UserModel user;
@@ -39,7 +39,7 @@ class _ProfileVerificationPageState extends State<ProfileVerificationPage> {
   if (widget.user.email != null) {
     Navigator.push(
       context,
-        MaterialPageRoute(builder: (context) => StakingConnectionPage(user: widget.user)),
+        MaterialPageRoute(builder: (context) => SwipePage()),
     );
   }
 }
@@ -291,7 +291,7 @@ Future<void> _startReclaimVerification() async {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => StakingConnectionPage(user: widget.user),
+                          builder: (context) => SwipePage(),
                         ),
                       );
                     },

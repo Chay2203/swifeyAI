@@ -1,4 +1,5 @@
 class UserModel {
+  String? userId;
   String? email;
   String? name;
   DateTime? dateOfBirth;
@@ -7,6 +8,7 @@ class UserModel {
   String? company;
 
   UserModel({
+    this.userId,
     this.email,
     this.name,
     this.dateOfBirth,
@@ -17,6 +19,7 @@ class UserModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'userId': userId,
       'email': email,
       'name': name,
       'dateOfBirth': dateOfBirth?.toIso8601String(),
