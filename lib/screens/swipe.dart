@@ -49,7 +49,7 @@ class _SwipePageState extends State<SwipePage> {
 
   void _onHorizontalDragUpdate(DragUpdateDetails details) {
     setState(() {
-      _cardOffset += details.delta.dx;
+      _cardOffset += details.primaryDelta!;
     });
   }
 
@@ -79,68 +79,71 @@ class _SwipePageState extends State<SwipePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text('Swipe Connections', style: TextStyle(color: Colors.black)),
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.person, color: Colors.grey),
-          onPressed: () {
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.chat, color: Colors.grey),
+        appBar: AppBar(
+          title: Text('Swipe Connections', style: TextStyle(color: Colors.black)),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.person, color: Colors.grey),
             onPressed: () {
-              // Chat navigation
             },
           ),
-        ],
-      ),
-      body: GestureDetector(
-        onHorizontalDragStart: _onHorizontalDragStart,
-        onHorizontalDragUpdate: _onHorizontalDragUpdate,
-        onHorizontalDragEnd: _onHorizontalDragEnd,
-        onHorizontalDragCancel: _onHorizontalDragCancel,
-        child: Center(
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              _buildUserCard(users[(_currentIndex + 1) % users.length], 
-                  scale: 0.9, opacity: 0.8),
-              Transform.translate(
-                offset: Offset(_cardOffset, 0),
-                child: Transform.rotate(
-                  angle: _cardOffset / MediaQuery.of(context).size.width * 0.2,
-                  child: _buildUserCard(users[_currentIndex]),
-                ),
-              ),
-              if (_isSwiping)
-                Positioned(
-                  bottom: 20,
-                  left: 0,
-                  right: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (_cardOffset < 0) 
-                        _buildActionButton(
-                          icon: Icons.close,
-                          color: Colors.red,
-                          opacity: (_cardOffset.abs() / (MediaQuery.of(context).size.width * 0.5)).clamp(0.0, 1.0),
-                        ),
-                      if (_cardOffset > 0)
-                        _buildActionButton(
-                          icon: Icons.favorite,
-                          color: Colors.green,
-                          opacity: (_cardOffset.abs() / (MediaQuery.of(context).size.width * 0.5)).clamp(0.0, 1.0),
-                        ),
-                    ],
+          actions: [
+            IconButton(
+              icon: Icon(Icons.chat, color: Colors.grey),
+              onPressed: () {
+              },
+            ),
+          ],
+        ),
+        body: GestureDetector(
+          onHorizontalDragStart: _onHorizontalDragStart,
+          onHorizontalDragUpdate: _onHorizontalDragUpdate,
+          onHorizontalDragEnd: _onHorizontalDragEnd,
+          onHorizontalDragCancel: _onHorizontalDragCancel,
+          child: Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                _buildUserCard(users[(_currentIndex + 1) % users.length], scale: 0.9, opacity: 0.8),
+                Transform.translate(
+                  offset: Offset(_cardOffset, 0),
+                  child: Transform.rotate(
+                    angle: _cardOffset / MediaQuery.of(context).size.width * 0.2,
+                    child: _buildUserCard(users[_currentIndex]),
                   ),
                 ),
-            ],
+                if (_isSwiping)
+                  Positioned(
+                    bottom: 20,
+                    left: 0,
+                    right: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (_cardOffset < 0) 
+                          _buildActionButton(
+                            icon: Icons.close,
+                            color: Colors.red,
+                            opacity: (_cardOffset.abs() / (MediaQuery.of(context).size.width * 0.5)).clamp(0.0, 1.0),
+                          ),
+                        if (_cardOffset > 0) 
+                          _buildActionButton(
+                            icon: Icons.favorite,
+                            color: Colors.green,
+                            opacity: (_cardOffset.abs() / (MediaQuery.of(context).size.width * 0.5)).clamp(0.0, 1.0),
+                          ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
@@ -158,7 +161,7 @@ class _SwipePageState extends State<SwipePage> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
-              BoxShadow(
+              const BoxShadow(
                 color: Colors.black26,
                 blurRadius: 10,
                 offset: Offset(0, 4),
@@ -218,9 +221,9 @@ class _SwipePageState extends State<SwipePage> {
   }
 
   Widget _buildActionButton({
-    required IconData icon, 
-    required Color color, 
-    double opacity = 1.0
+    required IconData icon,
+    required Color color,
+    double opacity = 1.0,
   }) {
     return Opacity(
       opacity: opacity,
@@ -247,9 +250,7 @@ class _SwipePageState extends State<SwipePage> {
     if (birthDate == null) return 0;
     DateTime currentDate = DateTime.now();
     int age = currentDate.year - birthDate.year;
-    if (currentDate.month < birthDate.month || 
-        (currentDate.month == birthDate.month && 
-         currentDate.day < birthDate.day)) {
+    if (currentDate.month < birthDate.month || (currentDate.month == birthDate.month && currentDate.day < birthDate.day)) {
       age--;
     }
     return age;
