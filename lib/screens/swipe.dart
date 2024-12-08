@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 import '../models/user.dart';
+import 'stake.dart';
+import 'profile.dart';
+import 'chatall.dart';
 
 class SwipePage extends StatefulWidget {
+  final UserModel currentUser;
+
+  const SwipePage({
+    required this.currentUser,
+    Key? key
+  }) : super(key: key);
+
   @override
   _SwipePageState createState() => _SwipePageState();
 }
@@ -9,16 +19,17 @@ class SwipePage extends StatefulWidget {
 class _SwipePageState extends State<SwipePage> {
   final List<UserModel> users = [
     UserModel(
-      userId: '1',
-      name: 'John Doe',
-      email: 'john@example.com',
+      userId: '20',
+      name: 'Naga Chaitanya',
+      email: 'naga@example.com',
       dateOfBirth: DateTime(1995, 5, 12),
       gender: 'Male',
-      college: 'Harvard University',
+      college: 'Scaler School of Technology',
       company: 'Tech Inc.',
+
     ),
     UserModel(
-      userId: '2',
+      userId: '21',
       name: 'Jane Smith',
       email: 'jane@example.com',
       dateOfBirth: DateTime(1993, 8, 19),
@@ -27,7 +38,7 @@ class _SwipePageState extends State<SwipePage> {
       company: 'Innovate Corp.',
     ),
     UserModel(
-      userId: '3',
+      userId: '22',
       name: 'Alice Brown',
       email: 'alice@example.com',
       dateOfBirth: DateTime(1990, 3, 23),
@@ -41,6 +52,7 @@ class _SwipePageState extends State<SwipePage> {
   double _cardOffset = 0.0;
   bool _isSwiping = false;
 
+
   void _onHorizontalDragStart(DragStartDetails details) {
     setState(() {
       _isSwiping = true;
@@ -53,28 +65,41 @@ class _SwipePageState extends State<SwipePage> {
     });
   }
 
-  void _onHorizontalDragEnd(DragEndDetails details) {
-    if (_cardOffset.abs() > MediaQuery.of(context).size.width * 0.5) {
-      setState(() {
-        _currentIndex = (_currentIndex + 1) % users.length;
-        _cardOffset = 0.0;
-      });
-    } else {
-      setState(() {
-        _cardOffset = 0.0;
-      });
+    void _onHorizontalDragEnd(DragEndDetails details) {
+        if (_cardOffset.abs() > MediaQuery.of(context).size.width * 0.5) {
+            UserModel targetUser = users[_currentIndex]; 
+            _onSwipeRight(targetUser); 
+            setState(() {
+                _currentIndex = (_currentIndex + 1) % users.length;
+                _cardOffset = 0.0;
+            });
+        } else {
+            setState(() {
+                _cardOffset = 0.0;
+            });
+        }
+        setState(() {
+            _isSwiping = false;
+        });
     }
-
-    setState(() {
-      _isSwiping = false;
-    });
-  }
 
   void _onHorizontalDragCancel() {
     setState(() {
       _cardOffset = 0.0;
       _isSwiping = false;
     });
+  }
+
+  void _onSwipeRight(UserModel targetUser) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StakingPage(
+          currentUser: widget.currentUser,
+          targetUser: targetUser
+        )
+      )
+    );
   }
 
   @override
@@ -92,12 +117,20 @@ class _SwipePageState extends State<SwipePage> {
           leading: IconButton(
             icon: Icon(Icons.person, color: Colors.grey),
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage(user: widget.currentUser)),
+              );
             },
           ),
           actions: [
             IconButton(
               icon: Icon(Icons.chat, color: Colors.grey),
               onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatConnectionsPage(currentUser: widget.currentUser)),
+                );
               },
             ),
           ],
@@ -151,68 +184,71 @@ class _SwipePageState extends State<SwipePage> {
   }
 
   Widget _buildUserCard(UserModel user, {double scale = 1.0, double opacity = 1.0}) {
-    return Transform.scale(
-      scale: scale,
-      child: Opacity(
-        opacity: opacity,
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.85,
-          height: MediaQuery.of(context).size.height * 0.7,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              const BoxShadow(
-                color: Colors.black26,
-                blurRadius: 10,
-                offset: Offset(0, 4),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(0.8),
+    return GestureDetector(
+      onDoubleTap: () => _onSwipeRight(user),
+      child: Transform.scale(
+        scale: scale,
+        child: Opacity(
+          opacity: opacity,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.85,
+            height: MediaQuery.of(context).size.height * 0.7,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                const BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.8),
+                          ],
+                        ),
+                      ),
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${user.name}, ${_calculateAge(user.dateOfBirth)}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            '${user.college} • ${user.company}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${user.name}, ${_calculateAge(user.dateOfBirth)}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          '${user.college} • ${user.company}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -257,4 +293,4 @@ class _SwipePageState extends State<SwipePage> {
   }
 }
 
-void main() => runApp(MaterialApp(home: SwipePage()));
+void main() => runApp(MaterialApp(home: SwipePage(currentUser: UserModel(userId: '1', name: 'John Doe', email: 'john@example.com'))));

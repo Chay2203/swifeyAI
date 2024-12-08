@@ -2,11 +2,11 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:reclaim_sdk/reclaim.dart';
+import 'package:swifey/screens/swipe.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swifey/models/user.dart';
 import 'package:swifey/services/mongo.dart';
-import 'swipe.dart';
 
 class ProfileVerificationPage extends StatefulWidget {
   final UserModel user;
@@ -36,16 +36,16 @@ class _ProfileVerificationPageState extends State<ProfileVerificationPage> {
   }
 
   void handleNext() {
-  if (widget.user.email != null) {
-    Navigator.push(
-      context,
-        MaterialPageRoute(builder: (context) => SwipePage()),
-    );
+    if (widget.user.email != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SwipePage(currentUser: widget.user)),
+      );
+    }
   }
-}
 
   String _verificationStatus = 'Not Verified';
-  Map<String, dynamic> _verifiedData = {};
+  Map<String, dynamic> _verifiedData = {};  
 
   final List<String> _verifiableFields = [
     'Name',
@@ -284,14 +284,11 @@ Future<void> _startReclaimVerification() async {
                 onPressed: _isSaving 
                   ? null 
                   : () async {
-                      // Save user profile
                       await _saveUserData();
-
-                      // After saving, navigate to StakingConnectionPage
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SwipePage(),
+                          builder: (context) => SwipePage(currentUser: widget.user),
                         ),
                       );
                     },

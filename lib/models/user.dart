@@ -6,6 +6,10 @@ class UserModel {
   String? gender;
   String? college;
   String? company;
+  String? walletAddress;
+  bool? stakingStatus;
+  bool? chatHistoryPreference;
+  List<String>? connectedUserIds;
 
   UserModel({
     this.userId,
@@ -15,7 +19,13 @@ class UserModel {
     this.gender,
     this.college,
     this.company,
-  });
+    this.walletAddress,
+    this.stakingStatus = false,
+    this.chatHistoryPreference = true,
+    this.connectedUserIds, 
+  }) {
+    connectedUserIds ??= [];
+  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -26,6 +36,10 @@ class UserModel {
       'gender': gender,
       'college': college,
       'company': company,
+      'walletAddress': walletAddress,
+      'stakingStatus': stakingStatus,
+      'chatHistoryPreference': chatHistoryPreference,
+      'connectedUserIds': connectedUserIds,
     };
   }
 }

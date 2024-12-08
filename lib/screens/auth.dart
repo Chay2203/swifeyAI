@@ -16,7 +16,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController emailController = TextEditingController();
 
 void handleNext() async {
-  int userId = Random().nextInt(1000000000);
+  int userId = Random().nextInt(100);
   if (emailController.text.isNotEmpty) {
     final user = UserModel(email: emailController.text, userId: userId.toString());
     await MongoDBService.insertUser(user);
