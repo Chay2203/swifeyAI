@@ -54,11 +54,8 @@ void handleNext() {
                   ],
                 ),
                 const SizedBox(height: 40),
-
-                // Form Section
                 Column(
                   children: [
-                    // Email Input
                     TextField(
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -83,8 +80,6 @@ void handleNext() {
                       style: GoogleFonts.poppins(fontSize: 16, color: Colors.black),
                     ),
                     const SizedBox(height: 20),
-
-                    // Button
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
@@ -107,8 +102,6 @@ void handleNext() {
                   ],
                 ),
                 const SizedBox(height: 20),
-
-                // Switch Section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

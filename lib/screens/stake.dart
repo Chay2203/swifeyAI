@@ -15,17 +15,13 @@ class _StakingConnectionPageState extends State<StakingConnectionPage> {
   bool connectionEstablished = false;
   String errorMessage = '';
 
-  // This function is just a placeholder for the staking process
-  // In a real scenario, you would integrate with a blockchain to perform the staking.
   void _stakeAmount() {
-    // Simulate staking process
     setState(() {
       userHasStaked = true;
       errorMessage = '';
     });
   }
 
-  // This function will check if both users have staked 0.2 SOL
   void _checkConnectionStatus() {
     if (userHasStaked) {
       setState(() {

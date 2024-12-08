@@ -38,7 +38,6 @@ Widget build(BuildContext context) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Back Button
           GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -50,8 +49,6 @@ Widget build(BuildContext context) {
             ),
           ),
           const SizedBox(height: 30.0),
-
-          // Title Text
           Text(
             "What's your gender?",
             style: GoogleFonts.poppins(
@@ -64,11 +61,9 @@ Widget build(BuildContext context) {
           ),
           const SizedBox(height: 20.0),
 
-          // Gender Options (Radio Buttons)
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              // Male Option
               Row(
                 children: [
                   Radio<String>(
@@ -77,7 +72,7 @@ Widget build(BuildContext context) {
                     onChanged: (String? value) {
                       setState(() {
                         selectedGender = value;
-                        errorMessage = ''; // Clear error on selection
+                        errorMessage = ''; 
                       });
                     },
                   ),
@@ -92,7 +87,6 @@ Widget build(BuildContext context) {
                 ],
               ),
               const SizedBox(width: 20),
-              // Female Option
               Row(
                 children: [
                   Radio<String>(
@@ -101,7 +95,7 @@ Widget build(BuildContext context) {
                     onChanged: (String? value) {
                       setState(() {
                         selectedGender = value;
-                        errorMessage = ''; // Clear error on selection
+                        errorMessage = ''; 
                       });
                     },
                   ),
@@ -116,12 +110,9 @@ Widget build(BuildContext context) {
                 ],
               ),
               const SizedBox(width: 20),
-              // Other Option
             ],
           ),
           const SizedBox(height: 20.0),
-
-          // Info Texts
           Text(
             "Please select your gender",
             style: GoogleFonts.poppins(
@@ -167,8 +158,6 @@ Widget build(BuildContext context) {
             ),
 
           const Spacer(),
-
-          // Next Button
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(double.infinity, 50),

@@ -16,7 +16,6 @@ class _DateSelectorState extends State<DateSelector> {
   String errorMessage = '';
 
   void handleNext() {
-    // Calculate age
     var age = DateTime.now().year - selectedDate.year;
     if (selectedDate.month > DateTime.now().month || (selectedDate.month == DateTime.now().month && selectedDate.day > DateTime.now().day)) {
       age--;  

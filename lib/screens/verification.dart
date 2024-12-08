@@ -44,11 +44,9 @@ class _ProfileVerificationPageState extends State<ProfileVerificationPage> {
   }
 }
 
-  // Verification status and data
   String _verificationStatus = 'Not Verified';
   Map<String, dynamic> _verifiedData = {};
 
-  // List of verifiable fields
   final List<String> _verifiableFields = [
     'Name',
     'Date of Birth',

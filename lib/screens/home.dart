@@ -10,7 +10,6 @@ class HomeScreen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background Image
           Opacity(
             opacity: 0.9,
             child: Image.asset(
@@ -26,7 +25,6 @@ class HomeScreen extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Logo Image
                       ClipOval(
                         child: Image.asset(
                           'assets/logo.jpg',
@@ -48,7 +46,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              // Button
               Padding(
                 padding: const EdgeInsets.only(bottom: 50),
                 child: ElevatedButton(
